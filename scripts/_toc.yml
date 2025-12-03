@@ -1,0 +1,13 @@
+format: jb-book
+root: intro
+parts:
+  - caption: Data Preparation
+    chapters:
+    - file: 01_mobility_data
+    - file: 02_economic_data
+    - file: 03_employability_data
+    - file: 04_macro_data
+  - caption: Analysis & Results
+    chapters:
+    - file: 05_regression_analysis
+    - file: 06_visualization

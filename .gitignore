@@ -1,0 +1,5 @@
+_build/
+.venv/
+Datasets/
+.DS_Store
+__pycache__/

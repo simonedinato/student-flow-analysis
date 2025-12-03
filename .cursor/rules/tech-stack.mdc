@@ -1,0 +1,7 @@
+---
+alwaysApply: true
+---
+- Html, js for frontend
+- css, react, nodejs for frontend
+- python for Machine Learning
+- Separate databases for dev, test and prod
