@@ -1,0 +1,9 @@
+title: Student Flow Analysis
+author: Applied Econometrics Team
+logo: ""  # Add logo path if available
+execute:
+  execute_notebooks: force  # Force execution to ensure latest results
+
+html:
+  use_issues_button: true
+  use_repository_button: true
