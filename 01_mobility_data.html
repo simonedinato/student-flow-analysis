@@ -1,0 +1,1473 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Step 1: Mobility Data Construction &#8212; Student Flow Analysis</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/custom.js"></script>
+    <script src="_static/custom.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '01_mobility_data';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Step 2 &amp; 3: Earnings and Costs Data" href="02_economic_data.html" />
+    <link rel="prev" title="Student Flow Analysis: A Data-Driven Approach" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Student Flow Analysis</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Data Preparation</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Step 1: Mobility Data Construction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_economic_data.html">Step 2 &amp; 3: Earnings and Costs Data</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="03_employability_data.html">Step 4: Employability and Quality Proxies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_macro_data.html">Step 6: Macro and Gravity Variables</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Analysis &amp; Results</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="05_regression_analysis.html">Pre-Model Analysis and Variable Definitions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_visualization.html">Personalized Student Flow Visualization</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/01_mobility_data.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Step 1: Mobility Data Construction</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objective">Objective</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-sources">Data Sources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methodology-gravity-weighting">Methodology: Gravity Weighting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validation">Validation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finalize-mobility-od-exposures-v2">Finalize mobility O–D exposures (v2)</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="step-1-mobility-data-construction">
+<h1>Step 1: Mobility Data Construction<a class="headerlink" href="#step-1-mobility-data-construction" title="Permalink to this heading">#</a></h1>
+<section id="objective">
+<h2>Objective<a class="headerlink" href="#objective" title="Permalink to this heading">#</a></h2>
+<p>Construct the base panel dataset of international student flows (Origin-Destination-Year).</p>
+</section>
+<section id="data-sources">
+<h2>Data Sources<a class="headerlink" href="#data-sources" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>OECD Mobility Data</strong>: Detailed bilateral student flows (Enrolled, Graduated, New Entrants).</p></li>
+<li><p><strong>UNESCO Inbound/Outbound</strong>: Aggregate totals used to estimate bilateral flows where direct OECD data is missing.</p></li>
+</ol>
+</section>
+<section id="methodology-gravity-weighting">
+<h2>Methodology: Gravity Weighting<a class="headerlink" href="#methodology-gravity-weighting" title="Permalink to this heading">#</a></h2>
+<p>Many country pairs have missing bilateral flow data. To maximize coverage, we use a <strong>Gravity Weighting</strong> approach:</p>
+<ol class="arabic simple">
+<li><p>Calculate the <strong>share of total outbound students</strong> from Origin <span class="math notranslate nohighlight">\(i\)</span> that go to Destination <span class="math notranslate nohighlight">\(j\)</span> (based on available data or regional averages).</p></li>
+<li><p>Multiply this share by the <strong>total outbound students</strong> from Origin <span class="math notranslate nohighlight">\(i\)</span> (UNESCO) to estimate the bilateral flow <span class="math notranslate nohighlight">\(Students_{ij}\)</span>.</p></li>
+<li><p>Where direct OECD data exists (<code class="docutils literal notranslate"><span class="pre">flow_source</span> <span class="pre">=</span> <span class="pre">'reported'</span></code>), we prioritize it over estimates (<code class="docutils literal notranslate"><span class="pre">flow_source</span> <span class="pre">=</span> <span class="pre">'estimated'</span></code>).</p></li>
+</ol>
+</section>
+<section id="validation">
+<h2>Validation<a class="headerlink" href="#validation" title="Permalink to this heading">#</a></h2>
+<p>We verify that the calculated weights sum to 1 for each origin-year, ensuring no students are “lost” or double-counted.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">DATA_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/Users/simonedinato/Documents/Classes/Applied Econometrics/Project/Datasets/01_mobility_OD&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">csv_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;encoding&quot;</span><span class="p">:</span> <span class="s2">&quot;utf-8-sig&quot;</span><span class="p">}</span>
+
+<span class="n">mobile_counts_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="n">DATA_PATH</span> <span class="o">/</span> <span class="s2">&quot;Number of mobile students enrolled and graduated by country of origin.csv&quot;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">csv_kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">national_abroad_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="n">DATA_PATH</span> <span class="o">/</span> <span class="s2">&quot;Number of national tertiary students enrolled abroad.csv&quot;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">csv_kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">share_dest_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="n">DATA_PATH</span> <span class="o">/</span> <span class="s2">&quot;Share of mobile students enrolled at tertiary level by country of destination.csv&quot;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">csv_kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">share_origin_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="n">DATA_PATH</span> <span class="o">/</span> <span class="s2">&quot;Share of mobile students enrolled at tertiary level by country of origin.csv&quot;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">csv_kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">share_mobility_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="n">DATA_PATH</span> <span class="o">/</span> <span class="s2">&quot;Share of mobile enrolments, new entrants and graduates.csv&quot;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">csv_kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">total_students_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="n">DATA_PATH</span> <span class="o">/</span> <span class="s2">&quot;Total number of enrolled students, new entrants and graduates.csv&quot;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">csv_kwargs</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">unesco_inbound_path</span> <span class="o">=</span> <span class="n">DATA_PATH</span> <span class="o">/</span> <span class="s2">&quot;UNESCO-inbound&quot;</span> <span class="o">/</span> <span class="s2">&quot;data.csv&quot;</span>
+<span class="n">unesco_outbound_path</span> <span class="o">=</span> <span class="n">DATA_PATH</span> <span class="o">/</span> <span class="s2">&quot;UNESCO-outbound&quot;</span> <span class="o">/</span> <span class="s2">&quot;data.csv&quot;</span>
+<span class="n">unesco_inbound_df</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">unesco_inbound_path</span><span class="p">,</span> <span class="o">**</span><span class="n">csv_kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">unesco_inbound_path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+    <span class="k">else</span> <span class="kc">None</span>
+<span class="p">)</span>
+<span class="n">unesco_outbound_df</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">unesco_outbound_path</span><span class="p">,</span> <span class="o">**</span><span class="n">csv_kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">unesco_outbound_path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+    <span class="k">else</span> <span class="kc">None</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span> <span class="p">{</span>
+    <span class="s2">&quot;mobile_counts_df&quot;</span><span class="p">:</span> <span class="n">mobile_counts_df</span><span class="p">,</span>
+    <span class="s2">&quot;national_abroad_df&quot;</span><span class="p">:</span> <span class="n">national_abroad_df</span><span class="p">,</span>
+    <span class="s2">&quot;share_dest_df&quot;</span><span class="p">:</span> <span class="n">share_dest_df</span><span class="p">,</span>
+    <span class="s2">&quot;share_origin_df&quot;</span><span class="p">:</span> <span class="n">share_origin_df</span><span class="p">,</span>
+    <span class="s2">&quot;share_mobility_df&quot;</span><span class="p">:</span> <span class="n">share_mobility_df</span><span class="p">,</span>
+    <span class="s2">&quot;total_students_df&quot;</span><span class="p">:</span> <span class="n">total_students_df</span><span class="p">,</span>
+<span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> columns:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+<span class="k">if</span> <span class="n">unesco_inbound_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">unesco_inbound_df columns:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">unesco_inbound_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="k">if</span> <span class="n">unesco_outbound_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">unesco_outbound_df columns:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">unesco_outbound_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mobile_counts_df columns:
+ [&#39;STRUCTURE&#39;, &#39;STRUCTURE_ID&#39;, &#39;STRUCTURE_NAME&#39;, &#39;ACTION&#39;, &#39;REF_AREA&#39;, &#39;Reference area&#39;, &#39;EDUCATION_LEV&#39;, &#39;Education level&#39;, &#39;MEASURE&#39;, &#39;Measure&#39;, &#39;EDUCATION_TYPE&#39;, &#39;Education type&#39;, &#39;INTENSITY&#39;, &#39;Intensity&#39;, &#39;EDUCATION_FIELD&#39;, &#39;Field of education&#39;, &#39;GRADE&#39;, &#39;Grade&#39;, &#39;FREQ&#39;, &#39;Frequency of observation&#39;, &#39;ORIGIN&#39;, &#39;Origin&#39;, &#39;DESTINATION&#39;, &#39;Destination&#39;, &#39;INST_TYPE_EDU&#39;, &#39;Type of educational institution&#39;, &#39;MOBILITY&#39;, &#39;Mobility&#39;, &#39;UNIT_MEASURE&#39;, &#39;Unit of measure&#39;, &#39;SEX&#39;, &#39;Sex&#39;, &#39;AGE&#39;, &#39;Age&#39;, &#39;TIME_PERIOD&#39;, &#39;Time period&#39;, &#39;OBS_VALUE&#39;, &#39;Observation value&#39;, &#39;REF_YEAR_AGES&#39;, &#39;Reference date for ages&#39;, &#39;ORIGIN_CRITERION&#39;, &#39;Origin criterion&#39;, &#39;REPYEARSTART&#39;, &#39;Reference year start&#39;, &#39;REPYEAREND&#39;, &#39;Reference year end&#39;, &#39;OBS_STATUS&#39;, &#39;Observation status&#39;, &#39;CONF_STATUS&#39;, &#39;Confidentiality status&#39;, &#39;COMMENT_OBS&#39;, &#39;Observation comment&#39;, &#39;DECIMALS&#39;, &#39;Decimals&#39;, &#39;TIME_PER_COLLECT&#39;, &#39;Time period collection&#39;, &#39;UNIT_MULT&#39;, &#39;Unit multiplier&#39;]
+
+national_abroad_df columns:
+ [&#39;STRUCTURE&#39;, &#39;STRUCTURE_ID&#39;, &#39;STRUCTURE_NAME&#39;, &#39;ACTION&#39;, &#39;REF_AREA&#39;, &#39;Reference area&#39;, &#39;EDUCATION_LEV&#39;, &#39;Education level&#39;, &#39;MEASURE&#39;, &#39;Measure&#39;, &#39;EDUCATION_TYPE&#39;, &#39;Education type&#39;, &#39;INTENSITY&#39;, &#39;Intensity&#39;, &#39;EDUCATION_FIELD&#39;, &#39;Field of education&#39;, &#39;GRADE&#39;, &#39;Grade&#39;, &#39;FREQ&#39;, &#39;Frequency of observation&#39;, &#39;ORIGIN&#39;, &#39;Origin&#39;, &#39;DESTINATION&#39;, &#39;Destination&#39;, &#39;INST_TYPE_EDU&#39;, &#39;Type of educational institution&#39;, &#39;MOBILITY&#39;, &#39;Mobility&#39;, &#39;UNIT_MEASURE&#39;, &#39;Unit of measure&#39;, &#39;SEX&#39;, &#39;Sex&#39;, &#39;AGE&#39;, &#39;Age&#39;, &#39;TIME_PERIOD&#39;, &#39;Time period&#39;, &#39;OBS_VALUE&#39;, &#39;Observation value&#39;, &#39;REF_YEAR_AGES&#39;, &#39;Reference date for ages&#39;, &#39;ORIGIN_CRITERION&#39;, &#39;Origin criterion&#39;, &#39;REPYEARSTART&#39;, &#39;Reference year start&#39;, &#39;REPYEAREND&#39;, &#39;Reference year end&#39;, &#39;OBS_STATUS&#39;, &#39;Observation status&#39;, &#39;CONF_STATUS&#39;, &#39;Confidentiality status&#39;, &#39;COMMENT_OBS&#39;, &#39;Observation comment&#39;, &#39;DECIMALS&#39;, &#39;Decimals&#39;, &#39;TIME_PER_COLLECT&#39;, &#39;Time period collection&#39;, &#39;UNIT_MULT&#39;, &#39;Unit multiplier&#39;]
+
+share_dest_df columns:
+ [&#39;STRUCTURE&#39;, &#39;STRUCTURE_ID&#39;, &#39;STRUCTURE_NAME&#39;, &#39;ACTION&#39;, &#39;REF_AREA&#39;, &#39;Reference area&#39;, &#39;EDUCATION_LEV&#39;, &#39;Education level&#39;, &#39;MEASURE&#39;, &#39;Measure&#39;, &#39;EDUCATION_TYPE&#39;, &#39;Education type&#39;, &#39;INTENSITY&#39;, &#39;Intensity&#39;, &#39;EDUCATION_FIELD&#39;, &#39;Field of education&#39;, &#39;GRADE&#39;, &#39;Grade&#39;, &#39;FREQ&#39;, &#39;Frequency of observation&#39;, &#39;ORIGIN&#39;, &#39;Origin&#39;, &#39;DESTINATION&#39;, &#39;Destination&#39;, &#39;INST_TYPE_EDU&#39;, &#39;Type of educational institution&#39;, &#39;MOBILITY&#39;, &#39;Mobility&#39;, &#39;UNIT_MEASURE&#39;, &#39;Unit of measure&#39;, &#39;SEX&#39;, &#39;Sex&#39;, &#39;AGE&#39;, &#39;Age&#39;, &#39;TIME_PERIOD&#39;, &#39;Time period&#39;, &#39;OBS_VALUE&#39;, &#39;Observation value&#39;, &#39;REF_YEAR_AGES&#39;, &#39;Reference date for ages&#39;, &#39;ORIGIN_CRITERION&#39;, &#39;Origin criterion&#39;, &#39;REPYEARSTART&#39;, &#39;Reference year start&#39;, &#39;REPYEAREND&#39;, &#39;Reference year end&#39;, &#39;OBS_STATUS&#39;, &#39;Observation status&#39;, &#39;CONF_STATUS&#39;, &#39;Confidentiality status&#39;, &#39;COMMENT_OBS&#39;, &#39;Observation comment&#39;, &#39;DECIMALS&#39;, &#39;Decimals&#39;, &#39;TIME_PER_COLLECT&#39;, &#39;Time period collection&#39;, &#39;UNIT_MULT&#39;, &#39;Unit multiplier&#39;]
+
+share_origin_df columns:
+ [&#39;STRUCTURE&#39;, &#39;STRUCTURE_ID&#39;, &#39;STRUCTURE_NAME&#39;, &#39;ACTION&#39;, &#39;REF_AREA&#39;, &#39;Reference area&#39;, &#39;EDUCATION_LEV&#39;, &#39;Education level&#39;, &#39;MEASURE&#39;, &#39;Measure&#39;, &#39;EDUCATION_TYPE&#39;, &#39;Education type&#39;, &#39;INTENSITY&#39;, &#39;Intensity&#39;, &#39;EDUCATION_FIELD&#39;, &#39;Field of education&#39;, &#39;GRADE&#39;, &#39;Grade&#39;, &#39;FREQ&#39;, &#39;Frequency of observation&#39;, &#39;ORIGIN&#39;, &#39;Origin&#39;, &#39;DESTINATION&#39;, &#39;Destination&#39;, &#39;INST_TYPE_EDU&#39;, &#39;Type of educational institution&#39;, &#39;MOBILITY&#39;, &#39;Mobility&#39;, &#39;UNIT_MEASURE&#39;, &#39;Unit of measure&#39;, &#39;SEX&#39;, &#39;Sex&#39;, &#39;AGE&#39;, &#39;Age&#39;, &#39;TIME_PERIOD&#39;, &#39;Time period&#39;, &#39;OBS_VALUE&#39;, &#39;Observation value&#39;, &#39;REF_YEAR_AGES&#39;, &#39;Reference date for ages&#39;, &#39;ORIGIN_CRITERION&#39;, &#39;Origin criterion&#39;, &#39;REPYEARSTART&#39;, &#39;Reference year start&#39;, &#39;REPYEAREND&#39;, &#39;Reference year end&#39;, &#39;OBS_STATUS&#39;, &#39;Observation status&#39;, &#39;CONF_STATUS&#39;, &#39;Confidentiality status&#39;, &#39;COMMENT_OBS&#39;, &#39;Observation comment&#39;, &#39;DECIMALS&#39;, &#39;Decimals&#39;, &#39;TIME_PER_COLLECT&#39;, &#39;Time period collection&#39;, &#39;UNIT_MULT&#39;, &#39;Unit multiplier&#39;]
+
+share_mobility_df columns:
+ [&#39;STRUCTURE&#39;, &#39;STRUCTURE_ID&#39;, &#39;STRUCTURE_NAME&#39;, &#39;ACTION&#39;, &#39;REF_AREA&#39;, &#39;Reference area&#39;, &#39;EDUCATION_LEV&#39;, &#39;Education level&#39;, &#39;MEASURE&#39;, &#39;Measure&#39;, &#39;EDUCATION_TYPE&#39;, &#39;Education type&#39;, &#39;INTENSITY&#39;, &#39;Intensity&#39;, &#39;EDUCATION_FIELD&#39;, &#39;Field of education&#39;, &#39;GRADE&#39;, &#39;Grade&#39;, &#39;FREQ&#39;, &#39;Frequency of observation&#39;, &#39;ORIGIN&#39;, &#39;Origin&#39;, &#39;DESTINATION&#39;, &#39;Destination&#39;, &#39;INST_TYPE_EDU&#39;, &#39;Type of educational institution&#39;, &#39;MOBILITY&#39;, &#39;Mobility&#39;, &#39;UNIT_MEASURE&#39;, &#39;Unit of measure&#39;, &#39;SEX&#39;, &#39;Sex&#39;, &#39;AGE&#39;, &#39;Age&#39;, &#39;TIME_PERIOD&#39;, &#39;Time period&#39;, &#39;OBS_VALUE&#39;, &#39;Observation value&#39;, &#39;REF_YEAR_AGES&#39;, &#39;Reference date for ages&#39;, &#39;ORIGIN_CRITERION&#39;, &#39;Origin criterion&#39;, &#39;REPYEARSTART&#39;, &#39;Reference year start&#39;, &#39;REPYEAREND&#39;, &#39;Reference year end&#39;, &#39;OBS_STATUS&#39;, &#39;Observation status&#39;, &#39;CONF_STATUS&#39;, &#39;Confidentiality status&#39;, &#39;COMMENT_OBS&#39;, &#39;Observation comment&#39;, &#39;DECIMALS&#39;, &#39;Decimals&#39;, &#39;TIME_PER_COLLECT&#39;, &#39;Time period collection&#39;, &#39;UNIT_MULT&#39;, &#39;Unit multiplier&#39;]
+
+total_students_df columns:
+ [&#39;STRUCTURE&#39;, &#39;STRUCTURE_ID&#39;, &#39;STRUCTURE_NAME&#39;, &#39;ACTION&#39;, &#39;REF_AREA&#39;, &#39;Reference area&#39;, &#39;EDUCATION_LEV&#39;, &#39;Education level&#39;, &#39;MEASURE&#39;, &#39;Measure&#39;, &#39;EDUCATION_TYPE&#39;, &#39;Education type&#39;, &#39;INTENSITY&#39;, &#39;Intensity&#39;, &#39;EDUCATION_FIELD&#39;, &#39;Field of education&#39;, &#39;GRADE&#39;, &#39;Grade&#39;, &#39;FREQ&#39;, &#39;Frequency of observation&#39;, &#39;ORIGIN&#39;, &#39;Origin&#39;, &#39;DESTINATION&#39;, &#39;Destination&#39;, &#39;INST_TYPE_EDU&#39;, &#39;Type of educational institution&#39;, &#39;MOBILITY&#39;, &#39;Mobility&#39;, &#39;UNIT_MEASURE&#39;, &#39;Unit of measure&#39;, &#39;SEX&#39;, &#39;Sex&#39;, &#39;AGE&#39;, &#39;Age&#39;, &#39;TIME_PERIOD&#39;, &#39;Time period&#39;, &#39;OBS_VALUE&#39;, &#39;Observation value&#39;, &#39;REF_YEAR_AGES&#39;, &#39;Reference date for ages&#39;, &#39;ORIGIN_CRITERION&#39;, &#39;Origin criterion&#39;, &#39;REPYEARSTART&#39;, &#39;Reference year start&#39;, &#39;REPYEAREND&#39;, &#39;Reference year end&#39;, &#39;OBS_STATUS&#39;, &#39;Observation status&#39;, &#39;CONF_STATUS&#39;, &#39;Confidentiality status&#39;, &#39;COMMENT_OBS&#39;, &#39;Observation comment&#39;, &#39;DECIMALS&#39;, &#39;Decimals&#39;, &#39;TIME_PER_COLLECT&#39;, &#39;Time period collection&#39;, &#39;UNIT_MULT&#39;, &#39;Unit multiplier&#39;]
+
+unesco_inbound_df columns:
+ [&#39;indicatorId&#39;, &#39;geoUnit&#39;, &#39;year&#39;, &#39;value&#39;, &#39;qualifier&#39;, &#39;magnitude&#39;]
+
+unesco_outbound_df columns:
+ [&#39;indicatorId&#39;, &#39;geoUnit&#39;, &#39;year&#39;, &#39;value&#39;, &#39;qualifier&#39;, &#39;magnitude&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">_apply_filters</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">filters</span><span class="p">):</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">column</span><span class="p">,</span> <span class="n">predicate</span> <span class="ow">in</span> <span class="n">filters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">&amp;=</span> <span class="n">predicate</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">common_filters</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;EDUCATION_LEV&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s2">&quot;ISCED11_5T8&quot;</span><span class="p">]),</span>
+    <span class="s2">&quot;EDUCATION_TYPE&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="s2">&quot;FE&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;INTENSITY&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="s2">&quot;_T&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;EDUCATION_FIELD&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="s2">&quot;_T&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;GRADE&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="s2">&quot;_T&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;FREQ&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;INST_TYPE_EDU&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="s2">&quot;INST_EDU&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;SEX&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="s2">&quot;_T&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;AGE&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="s2">&quot;_T&quot;</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="n">YEAR_START</span> <span class="o">=</span> <span class="mi">2018</span>
+<span class="n">YEAR_END</span> <span class="o">=</span> <span class="mi">2023</span>
+
+<span class="n">alpha3_pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^[A-Z]</span><span class="si">{3}</span><span class="s2">$&quot;</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_alpha3_mask</span><span class="p">(</span><span class="n">series</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">series</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">alpha3_pattern</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_build_country_lookup</span><span class="p">():</span>
+    <span class="n">sources</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">df</span><span class="p">,</span> <span class="n">code_col</span><span class="p">,</span> <span class="n">name_col</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="p">(</span><span class="n">mobile_counts_df</span><span class="p">,</span> <span class="s2">&quot;REF_AREA&quot;</span><span class="p">,</span> <span class="s2">&quot;Reference area&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">mobile_counts_df</span><span class="p">,</span> <span class="s2">&quot;ORIGIN&quot;</span><span class="p">,</span> <span class="s2">&quot;Origin&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">national_abroad_df</span><span class="p">,</span> <span class="s2">&quot;REF_AREA&quot;</span><span class="p">,</span> <span class="s2">&quot;Reference area&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">share_dest_df</span><span class="p">,</span> <span class="s2">&quot;REF_AREA&quot;</span><span class="p">,</span> <span class="s2">&quot;Reference area&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">share_origin_df</span><span class="p">,</span> <span class="s2">&quot;REF_AREA&quot;</span><span class="p">,</span> <span class="s2">&quot;Reference area&quot;</span><span class="p">),</span>
+    <span class="p">]:</span>
+        <span class="k">if</span> <span class="n">code_col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="ow">and</span> <span class="n">name_col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">tmp</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">df</span><span class="p">[[</span><span class="n">code_col</span><span class="p">,</span> <span class="n">name_col</span><span class="p">]]</span>
+                <span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+                <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">code_col</span><span class="p">:</span> <span class="s2">&quot;country_code&quot;</span><span class="p">,</span> <span class="n">name_col</span><span class="p">:</span> <span class="s2">&quot;country_name&quot;</span><span class="p">})</span>
+            <span class="p">)</span>
+            <span class="n">sources</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sources</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{}</span>
+    <span class="n">lookup</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">sources</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+    <span class="p">)</span>
+    <span class="n">lookup</span> <span class="o">=</span> <span class="n">lookup</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">_alpha3_mask</span><span class="p">(</span><span class="n">lookup</span><span class="p">[</span><span class="s2">&quot;country_code&quot;</span><span class="p">])]</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">lookup</span><span class="p">[</span><span class="s2">&quot;country_code&quot;</span><span class="p">],</span> <span class="n">lookup</span><span class="p">[</span><span class="s2">&quot;country_name&quot;</span><span class="p">]))</span>
+
+
+<span class="n">mobile_counts_clean</span> <span class="o">=</span> <span class="n">_apply_filters</span><span class="p">(</span>
+    <span class="n">mobile_counts_df</span><span class="p">,</span>
+    <span class="p">{</span><span class="o">**</span><span class="n">common_filters</span><span class="p">,</span> <span class="s2">&quot;MOBILITY&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="s2">&quot;MOB&quot;</span><span class="p">),</span> <span class="s2">&quot;UNIT_MEASURE&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="s2">&quot;PS&quot;</span><span class="p">)},</span>
+<span class="p">)</span>
+<span class="n">mobile_counts_clean</span> <span class="o">=</span> <span class="n">mobile_counts_clean</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+    <span class="n">_alpha3_mask</span><span class="p">(</span><span class="n">mobile_counts_clean</span><span class="p">[</span><span class="s2">&quot;REF_AREA&quot;</span><span class="p">])</span> <span class="o">&amp;</span> <span class="n">_alpha3_mask</span><span class="p">(</span><span class="n">mobile_counts_clean</span><span class="p">[</span><span class="s2">&quot;ORIGIN&quot;</span><span class="p">])</span>
+<span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">mobile_counts_clean</span> <span class="o">=</span> <span class="n">mobile_counts_clean</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;REF_AREA&quot;</span><span class="p">:</span> <span class="s2">&quot;destination_country_code&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Reference area&quot;</span><span class="p">:</span> <span class="s2">&quot;destination_country&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ORIGIN&quot;</span><span class="p">:</span> <span class="s2">&quot;origin_country_code&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Origin&quot;</span><span class="p">:</span> <span class="s2">&quot;origin_country&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;TIME_PERIOD&quot;</span><span class="p">:</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;OBS_VALUE&quot;</span><span class="p">:</span> <span class="s2">&quot;obs_value&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;MEASURE&quot;</span><span class="p">:</span> <span class="s2">&quot;measure_code&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">mobile_counts_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">mobile_counts_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;Int64&quot;</span><span class="p">)</span>
+<span class="n">year_mask</span> <span class="o">=</span> <span class="n">mobile_counts_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="n">YEAR_START</span><span class="p">,</span> <span class="n">YEAR_END</span><span class="p">,</span> <span class="n">inclusive</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">)</span>
+<span class="n">mobile_counts_clean</span> <span class="o">=</span> <span class="n">mobile_counts_clean</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year_mask</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="kc">False</span><span class="p">)]</span>
+<span class="n">mobile_counts_clean</span><span class="p">[</span><span class="s2">&quot;obs_value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">mobile_counts_clean</span><span class="p">[</span><span class="s2">&quot;obs_value&quot;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span>
+
+<span class="n">oecd_mobility_df</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">mobile_counts_clean</span><span class="p">[</span>
+        <span class="p">[</span>
+            <span class="s2">&quot;destination_country_code&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;destination_country&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;origin_country_code&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;origin_country&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;year&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;measure_code&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;obs_value&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="p">]</span>
+    <span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span>
+        <span class="n">index</span><span class="o">=</span><span class="p">[</span>
+            <span class="s2">&quot;destination_country_code&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;destination_country&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;origin_country_code&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;origin_country&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;year&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
+        <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;measure_code&quot;</span><span class="p">,</span>
+        <span class="n">values</span><span class="o">=</span><span class="s2">&quot;obs_value&quot;</span><span class="p">,</span>
+        <span class="n">aggfunc</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">oecd_mobility_df</span> <span class="o">=</span> <span class="n">oecd_mobility_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;ENRL&quot;</span><span class="p">:</span> <span class="s2">&quot;students_enrolled&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;GRAD&quot;</span><span class="p">:</span> <span class="s2">&quot;students_graduated&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ENTR&quot;</span><span class="p">:</span> <span class="s2">&quot;students_new_entrants&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;students_enrolled&quot;</span><span class="p">,</span> <span class="s2">&quot;students_graduated&quot;</span><span class="p">,</span> <span class="s2">&quot;students_new_entrants&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">column</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">oecd_mobility_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">oecd_mobility_df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_filter_alpha3</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">_alpha3_mask</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">])]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+
+<span class="n">national_abroad_clean</span> <span class="o">=</span> <span class="n">_apply_filters</span><span class="p">(</span>
+    <span class="n">national_abroad_df</span><span class="p">,</span>
+    <span class="p">{</span><span class="o">**</span><span class="n">common_filters</span><span class="p">,</span> <span class="s2">&quot;MOBILITY&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="s2">&quot;NMOB&quot;</span><span class="p">),</span> <span class="s2">&quot;UNIT_MEASURE&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="s2">&quot;PS&quot;</span><span class="p">)},</span>
+<span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;REF_AREA&quot;</span><span class="p">:</span> <span class="s2">&quot;origin_country_code&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Reference area&quot;</span><span class="p">:</span> <span class="s2">&quot;origin_country&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;TIME_PERIOD&quot;</span><span class="p">:</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;OBS_VALUE&quot;</span><span class="p">:</span> <span class="s2">&quot;students_national_abroad&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)[[</span><span class="s2">&quot;origin_country_code&quot;</span><span class="p">,</span> <span class="s2">&quot;origin_country&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;students_national_abroad&quot;</span><span class="p">]]</span>
+<span class="n">national_abroad_clean</span> <span class="o">=</span> <span class="n">_filter_alpha3</span><span class="p">(</span><span class="n">national_abroad_clean</span><span class="p">,</span> <span class="s2">&quot;origin_country_code&quot;</span><span class="p">)</span>
+<span class="n">national_abroad_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">national_abroad_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;Int64&quot;</span><span class="p">)</span>
+<span class="n">national_abroad_clean</span> <span class="o">=</span> <span class="n">national_abroad_clean</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+    <span class="n">national_abroad_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="n">YEAR_START</span><span class="p">,</span> <span class="n">YEAR_END</span><span class="p">,</span> <span class="n">inclusive</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="n">national_abroad_clean</span><span class="p">[</span><span class="s2">&quot;students_national_abroad&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span>
+    <span class="n">national_abroad_clean</span><span class="p">[</span><span class="s2">&quot;students_national_abroad&quot;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span>
+<span class="p">)</span>
+
+<span class="n">share_dest_clean</span> <span class="o">=</span> <span class="n">_apply_filters</span><span class="p">(</span>
+    <span class="n">share_dest_df</span><span class="p">,</span>
+    <span class="p">{</span><span class="o">**</span><span class="n">common_filters</span><span class="p">,</span> <span class="s2">&quot;UNIT_MEASURE&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="s2">&quot;PT_ST&quot;</span><span class="p">)},</span>
+<span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;REF_AREA&quot;</span><span class="p">:</span> <span class="s2">&quot;destination_country_code&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Reference area&quot;</span><span class="p">:</span> <span class="s2">&quot;destination_country&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;TIME_PERIOD&quot;</span><span class="p">:</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;OBS_VALUE&quot;</span><span class="p">:</span> <span class="s2">&quot;share_mobile_destination&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Destination&quot;</span><span class="p">:</span> <span class="s2">&quot;origin_region&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;DESTINATION&quot;</span><span class="p">:</span> <span class="s2">&quot;origin_region_code&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">share_dest_clean</span> <span class="o">=</span> <span class="n">share_dest_clean</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">share_dest_clean</span><span class="p">[</span><span class="s2">&quot;origin_region&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="s2">&quot;World&quot;</span><span class="p">)][</span>
+    <span class="p">[</span><span class="s2">&quot;destination_country_code&quot;</span><span class="p">,</span> <span class="s2">&quot;destination_country&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;share_mobile_destination&quot;</span><span class="p">]</span>
+<span class="p">]</span>
+<span class="n">share_dest_clean</span> <span class="o">=</span> <span class="n">_filter_alpha3</span><span class="p">(</span><span class="n">share_dest_clean</span><span class="p">,</span> <span class="s2">&quot;destination_country_code&quot;</span><span class="p">)</span>
+<span class="n">share_dest_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">share_dest_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;Int64&quot;</span><span class="p">)</span>
+<span class="n">share_dest_clean</span> <span class="o">=</span> <span class="n">share_dest_clean</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+    <span class="n">share_dest_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="n">YEAR_START</span><span class="p">,</span> <span class="n">YEAR_END</span><span class="p">,</span> <span class="n">inclusive</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="n">share_dest_clean</span><span class="p">[</span><span class="s2">&quot;share_mobile_destination&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span>
+    <span class="n">share_dest_clean</span><span class="p">[</span><span class="s2">&quot;share_mobile_destination&quot;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span>
+<span class="p">)</span>
+
+<span class="n">share_origin_clean</span> <span class="o">=</span> <span class="n">_apply_filters</span><span class="p">(</span>
+    <span class="n">share_origin_df</span><span class="p">,</span>
+    <span class="p">{</span><span class="o">**</span><span class="n">common_filters</span><span class="p">,</span> <span class="s2">&quot;UNIT_MEASURE&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="s2">&quot;PT_ST&quot;</span><span class="p">)},</span>
+<span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;REF_AREA&quot;</span><span class="p">:</span> <span class="s2">&quot;origin_country_code&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Reference area&quot;</span><span class="p">:</span> <span class="s2">&quot;origin_country&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;TIME_PERIOD&quot;</span><span class="p">:</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;OBS_VALUE&quot;</span><span class="p">:</span> <span class="s2">&quot;share_mobile_origin&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Origin&quot;</span><span class="p">:</span> <span class="s2">&quot;destination_region&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ORIGIN&quot;</span><span class="p">:</span> <span class="s2">&quot;destination_region_code&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">share_origin_clean</span> <span class="o">=</span> <span class="n">share_origin_clean</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+    <span class="n">share_origin_clean</span><span class="p">[</span><span class="s2">&quot;destination_region&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="s2">&quot;World&quot;</span><span class="p">)</span>
+<span class="p">][[</span><span class="s2">&quot;origin_country_code&quot;</span><span class="p">,</span> <span class="s2">&quot;origin_country&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;share_mobile_origin&quot;</span><span class="p">]]</span>
+<span class="n">share_origin_clean</span> <span class="o">=</span> <span class="n">_filter_alpha3</span><span class="p">(</span><span class="n">share_origin_clean</span><span class="p">,</span> <span class="s2">&quot;origin_country_code&quot;</span><span class="p">)</span>
+<span class="n">share_origin_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">share_origin_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;Int64&quot;</span><span class="p">)</span>
+<span class="n">share_origin_clean</span> <span class="o">=</span> <span class="n">share_origin_clean</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+    <span class="n">share_origin_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="n">YEAR_START</span><span class="p">,</span> <span class="n">YEAR_END</span><span class="p">,</span> <span class="n">inclusive</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="n">share_origin_clean</span><span class="p">[</span><span class="s2">&quot;share_mobile_origin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span>
+    <span class="n">share_origin_clean</span><span class="p">[</span><span class="s2">&quot;share_mobile_origin&quot;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span>
+<span class="p">)</span>
+
+<span class="n">share_mobility_clean</span> <span class="o">=</span> <span class="n">_apply_filters</span><span class="p">(</span>
+    <span class="n">share_mobility_df</span><span class="p">,</span>
+    <span class="p">{</span><span class="o">**</span><span class="n">common_filters</span><span class="p">,</span> <span class="s2">&quot;UNIT_MEASURE&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="s2">&quot;PT_ST&quot;</span><span class="p">)},</span>
+<span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;REF_AREA&quot;</span><span class="p">:</span> <span class="s2">&quot;destination_country_code&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Reference area&quot;</span><span class="p">:</span> <span class="s2">&quot;destination_country&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;MEASURE&quot;</span><span class="p">:</span> <span class="s2">&quot;measure_code&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;TIME_PERIOD&quot;</span><span class="p">:</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;OBS_VALUE&quot;</span><span class="p">:</span> <span class="s2">&quot;share_value&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">share_mobility_clean</span> <span class="o">=</span> <span class="n">share_mobility_clean</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+    <span class="n">share_mobility_clean</span><span class="p">[</span><span class="s2">&quot;MOBILITY&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="s2">&quot;MOB&quot;</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="n">share_mobility_clean</span> <span class="o">=</span> <span class="n">_filter_alpha3</span><span class="p">(</span><span class="n">share_mobility_clean</span><span class="p">,</span> <span class="s2">&quot;destination_country_code&quot;</span><span class="p">)</span>
+<span class="n">share_mobility_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">share_mobility_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;Int64&quot;</span><span class="p">)</span>
+<span class="n">share_mobility_clean</span> <span class="o">=</span> <span class="n">share_mobility_clean</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+    <span class="n">share_mobility_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="n">YEAR_START</span><span class="p">,</span> <span class="n">YEAR_END</span><span class="p">,</span> <span class="n">inclusive</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="n">share_mobility_clean</span><span class="p">[</span><span class="s2">&quot;share_value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span>
+    <span class="n">share_mobility_clean</span><span class="p">[</span><span class="s2">&quot;share_value&quot;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span>
+<span class="p">)</span>
+<span class="n">share_mobility_pivot</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">share_mobility_clean</span><span class="p">[</span>
+        <span class="p">[</span>
+            <span class="s2">&quot;destination_country_code&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;destination_country&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;year&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;measure_code&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;share_value&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="p">]</span>
+    <span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span>
+        <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;destination_country_code&quot;</span><span class="p">,</span> <span class="s2">&quot;destination_country&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">],</span>
+        <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;measure_code&quot;</span><span class="p">,</span>
+        <span class="n">values</span><span class="o">=</span><span class="s2">&quot;share_value&quot;</span><span class="p">,</span>
+        <span class="n">aggfunc</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+        <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;ENRL&quot;</span><span class="p">:</span> <span class="s2">&quot;share_mobile_enrolled&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;GRAD&quot;</span><span class="p">:</span> <span class="s2">&quot;share_mobile_graduated&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ENTR&quot;</span><span class="p">:</span> <span class="s2">&quot;share_mobile_new_entrants&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+
+
+<span class="n">total_students_clean</span> <span class="o">=</span> <span class="n">_apply_filters</span><span class="p">(</span>
+    <span class="n">total_students_df</span><span class="p">,</span>
+    <span class="p">{</span><span class="o">**</span><span class="n">common_filters</span><span class="p">,</span> <span class="s2">&quot;MOBILITY&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="s2">&quot;MOB&quot;</span><span class="p">),</span> <span class="s2">&quot;UNIT_MEASURE&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="s2">&quot;PS&quot;</span><span class="p">)},</span>
+<span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;REF_AREA&quot;</span><span class="p">:</span> <span class="s2">&quot;destination_country_code&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Reference area&quot;</span><span class="p">:</span> <span class="s2">&quot;destination_country&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;MEASURE&quot;</span><span class="p">:</span> <span class="s2">&quot;measure_code&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;TIME_PERIOD&quot;</span><span class="p">:</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;OBS_VALUE&quot;</span><span class="p">:</span> <span class="s2">&quot;total_value&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">total_students_clean</span> <span class="o">=</span> <span class="n">_filter_alpha3</span><span class="p">(</span><span class="n">total_students_clean</span><span class="p">,</span> <span class="s2">&quot;destination_country_code&quot;</span><span class="p">)</span>
+<span class="n">total_students_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">total_students_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;Int64&quot;</span><span class="p">)</span>
+<span class="n">total_students_clean</span> <span class="o">=</span> <span class="n">total_students_clean</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+    <span class="n">total_students_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="n">YEAR_START</span><span class="p">,</span> <span class="n">YEAR_END</span><span class="p">,</span> <span class="n">inclusive</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="n">total_students_clean</span><span class="p">[</span><span class="s2">&quot;total_value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span>
+    <span class="n">total_students_clean</span><span class="p">[</span><span class="s2">&quot;total_value&quot;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span>
+<span class="p">)</span>
+<span class="n">total_students_pivot</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">total_students_clean</span><span class="p">[</span>
+        <span class="p">[</span>
+            <span class="s2">&quot;destination_country_code&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;destination_country&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;year&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;measure_code&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;total_value&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="p">]</span>
+    <span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span>
+        <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;destination_country_code&quot;</span><span class="p">,</span> <span class="s2">&quot;destination_country&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">],</span>
+        <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;measure_code&quot;</span><span class="p">,</span>
+        <span class="n">values</span><span class="o">=</span><span class="s2">&quot;total_value&quot;</span><span class="p">,</span>
+        <span class="n">aggfunc</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+        <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;ENRL&quot;</span><span class="p">:</span> <span class="s2">&quot;total_students_enrolled&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;GRAD&quot;</span><span class="p">:</span> <span class="s2">&quot;total_students_graduated&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ENTR&quot;</span><span class="p">:</span> <span class="s2">&quot;total_students_new_entrants&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">country_lookup</span> <span class="o">=</span> <span class="n">_build_country_lookup</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">unesco_inbound_df</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">unesco_outbound_df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;UNESCO inbound and outbound datasets are required to build the full mobility matrix.&quot;</span><span class="p">)</span>
+
+<span class="n">unesco_inbound_clean</span> <span class="o">=</span> <span class="n">unesco_inbound_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">unesco_inbound_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">unesco_inbound_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;Int64&quot;</span><span class="p">)</span>
+<span class="n">unesco_inbound_clean</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">unesco_inbound_clean</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span>
+<span class="n">unesco_inbound_clean</span> <span class="o">=</span> <span class="n">unesco_inbound_clean</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+    <span class="p">(</span><span class="n">unesco_inbound_clean</span><span class="p">[</span><span class="s2">&quot;indicatorId&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;26637&quot;</span><span class="p">)</span>
+    <span class="o">&amp;</span> <span class="n">_alpha3_mask</span><span class="p">(</span><span class="n">unesco_inbound_clean</span><span class="p">[</span><span class="s2">&quot;geoUnit&quot;</span><span class="p">])</span>
+<span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;geoUnit&quot;</span><span class="p">:</span> <span class="s2">&quot;destination_country_code&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;unesco_inbound_students&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="n">unesco_inbound_clean</span> <span class="o">=</span> <span class="n">unesco_inbound_clean</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;unesco_inbound_students&quot;</span><span class="p">])</span>
+<span class="n">unesco_inbound_clean</span><span class="p">[</span><span class="s2">&quot;destination_country&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">unesco_inbound_clean</span><span class="p">[</span><span class="s2">&quot;destination_country_code&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">country_lookup</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">unesco_inbound_clean</span><span class="p">[</span><span class="s2">&quot;destination_country_code&quot;</span><span class="p">])</span>
+
+<span class="n">unesco_outbound_clean</span> <span class="o">=</span> <span class="n">unesco_outbound_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">unesco_outbound_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">unesco_outbound_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;Int64&quot;</span><span class="p">)</span>
+<span class="n">unesco_outbound_clean</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">unesco_outbound_clean</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span>
+<span class="n">unesco_outbound_clean</span> <span class="o">=</span> <span class="n">unesco_outbound_clean</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+    <span class="p">(</span><span class="n">unesco_outbound_clean</span><span class="p">[</span><span class="s2">&quot;indicatorId&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;OE.5T8.40510&quot;</span><span class="p">)</span>
+    <span class="o">&amp;</span> <span class="n">_alpha3_mask</span><span class="p">(</span><span class="n">unesco_outbound_clean</span><span class="p">[</span><span class="s2">&quot;geoUnit&quot;</span><span class="p">])</span>
+<span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;geoUnit&quot;</span><span class="p">:</span> <span class="s2">&quot;origin_country_code&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;unesco_outbound_students&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="n">unesco_outbound_clean</span> <span class="o">=</span> <span class="n">unesco_outbound_clean</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;unesco_outbound_students&quot;</span><span class="p">])</span>
+<span class="n">unesco_outbound_clean</span><span class="p">[</span><span class="s2">&quot;origin_country&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">unesco_outbound_clean</span><span class="p">[</span><span class="s2">&quot;origin_country_code&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">country_lookup</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">unesco_outbound_clean</span><span class="p">[</span><span class="s2">&quot;origin_country_code&quot;</span><span class="p">])</span>
+
+<span class="n">common_years</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+    <span class="nb">set</span><span class="p">(</span><span class="n">unesco_inbound_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">())</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">unesco_outbound_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">())</span>
+<span class="p">)</span>
+<span class="n">common_years</span> <span class="o">=</span> <span class="p">[</span><span class="n">year</span> <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">common_years</span> <span class="k">if</span> <span class="n">YEAR_START</span> <span class="o">&lt;=</span> <span class="n">year</span> <span class="o">&lt;=</span> <span class="n">YEAR_END</span><span class="p">]</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">common_years</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No overlapping UNESCO data within the specified year range.&quot;</span><span class="p">)</span>
+<span class="n">unesco_inbound_clean</span> <span class="o">=</span> <span class="n">unesco_inbound_clean</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">unesco_inbound_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">common_years</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">unesco_outbound_clean</span> <span class="o">=</span> <span class="n">unesco_outbound_clean</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">unesco_outbound_clean</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">common_years</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">unesco_inbound_clean</span><span class="p">[</span><span class="s2">&quot;total_inbound_year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unesco_inbound_clean</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;year&quot;</span><span class="p">)[</span>
+    <span class="s2">&quot;unesco_inbound_students&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s2">&quot;sum&quot;</span><span class="p">)</span>
+<span class="n">unesco_inbound_clean</span> <span class="o">=</span> <span class="n">unesco_inbound_clean</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+    <span class="n">unesco_inbound_clean</span><span class="p">[</span><span class="s2">&quot;total_inbound_year&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">unesco_inbound_clean</span><span class="p">[</span><span class="s2">&quot;share_inbound_destination&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">unesco_inbound_clean</span><span class="p">[</span><span class="s2">&quot;unesco_inbound_students&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">unesco_inbound_clean</span><span class="p">[</span><span class="s2">&quot;total_inbound_year&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">mobility_matrix</span> <span class="o">=</span> <span class="n">unesco_outbound_clean</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">unesco_inbound_clean</span><span class="p">[</span>
+        <span class="p">[</span>
+            <span class="s2">&quot;destination_country_code&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;destination_country&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;year&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;unesco_inbound_students&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;share_inbound_destination&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="p">],</span>
+    <span class="n">on</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span>
+    <span class="n">how</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">mobility_matrix</span><span class="p">[</span><span class="s2">&quot;students_enrolled&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">mobility_matrix</span><span class="p">[</span><span class="s2">&quot;unesco_outbound_students&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">mobility_matrix</span><span class="p">[</span><span class="s2">&quot;share_inbound_destination&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">mobility_matrix</span><span class="p">[</span><span class="s2">&quot;students_graduated&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+<span class="n">mobility_matrix</span><span class="p">[</span><span class="s2">&quot;students_new_entrants&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+<span class="n">mobility_matrix</span><span class="p">[</span><span class="s2">&quot;flow_source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;estimated&quot;</span>
+
+<span class="n">mobility_matrix</span> <span class="o">=</span> <span class="n">mobility_matrix</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;unesco_outbound_students&quot;</span><span class="p">:</span> <span class="s2">&quot;students_outbound_total&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;unesco_inbound_students&quot;</span><span class="p">:</span> <span class="s2">&quot;students_inbound_destination&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">oecd_mobility_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+    <span class="n">mobility_matrix</span> <span class="o">=</span> <span class="n">mobility_matrix</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+        <span class="n">oecd_mobility_df</span><span class="p">[</span>
+            <span class="p">[</span>
+                <span class="s2">&quot;destination_country_code&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;destination_country&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;origin_country_code&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;origin_country&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;year&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;students_enrolled&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;students_graduated&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;students_new_entrants&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">],</span>
+        <span class="n">on</span><span class="o">=</span><span class="p">[</span>
+            <span class="s2">&quot;destination_country_code&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;destination_country&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;origin_country_code&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;origin_country&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;year&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
+        <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+        <span class="n">suffixes</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;_oecd&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">actual_mask</span> <span class="o">=</span> <span class="n">mobility_matrix</span><span class="p">[</span><span class="s2">&quot;students_enrolled_oecd&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;students_enrolled&quot;</span><span class="p">,</span> <span class="s2">&quot;students_graduated&quot;</span><span class="p">,</span> <span class="s2">&quot;students_new_entrants&quot;</span><span class="p">]:</span>
+        <span class="n">mobility_matrix</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">mobility_matrix</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s2">_oecd&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">combine_first</span><span class="p">(</span>
+            <span class="n">mobility_matrix</span><span class="p">[</span><span class="n">column</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">mobility_matrix</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s2">_oecd&quot;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">mobility_matrix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">actual_mask</span><span class="p">,</span> <span class="s2">&quot;flow_source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;reported&quot;</span>
+
+<span class="n">mobility_matrix</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mobility_matrix</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;Int64&quot;</span><span class="p">)</span>
+
+<span class="n">mobility_df</span> <span class="o">=</span> <span class="n">mobility_matrix</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;students_enrolled&quot;</span><span class="p">,</span> <span class="s2">&quot;students_graduated&quot;</span><span class="p">,</span> <span class="s2">&quot;students_new_entrants&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">column</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mobility_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">mobility_df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+
+<span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="p">[</span>
+    <span class="s2">&quot;students_enrolled&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;students_outbound_total&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;students_inbound_destination&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;share_inbound_destination&quot;</span><span class="p">,</span>
+<span class="p">]:</span>
+    <span class="k">if</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">mobility_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">mobility_df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">mobility_df</span><span class="p">[</span><span class="n">column</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span>
+
+<span class="n">merged_df</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">mobility_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+        <span class="n">share_dest_clean</span><span class="p">,</span>
+        <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;destination_country_code&quot;</span><span class="p">,</span> <span class="s2">&quot;destination_country&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">],</span>
+        <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+        <span class="n">share_origin_clean</span><span class="p">,</span>
+        <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;origin_country_code&quot;</span><span class="p">,</span> <span class="s2">&quot;origin_country&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">],</span>
+        <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+        <span class="n">share_mobility_pivot</span><span class="p">,</span>
+        <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;destination_country_code&quot;</span><span class="p">,</span> <span class="s2">&quot;destination_country&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">],</span>
+        <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+        <span class="n">total_students_pivot</span><span class="p">,</span>
+        <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;destination_country_code&quot;</span><span class="p">,</span> <span class="s2">&quot;destination_country&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">],</span>
+        <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+        <span class="n">national_abroad_clean</span><span class="p">,</span>
+        <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;origin_country_code&quot;</span><span class="p">,</span> <span class="s2">&quot;origin_country&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">],</span>
+        <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">merged_df</span> <span class="o">=</span> <span class="n">merged_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+    <span class="n">merged_df</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="n">YEAR_START</span><span class="p">,</span> <span class="n">YEAR_END</span><span class="p">,</span> <span class="n">inclusive</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="n">merged_df</span><span class="p">[</span><span class="s2">&quot;students_enrolled&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">merged_df</span><span class="p">[</span><span class="s2">&quot;students_enrolled&quot;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span>
+<span class="n">origin_year_totals</span> <span class="o">=</span> <span class="n">merged_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;origin_country_code&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">])[</span><span class="s2">&quot;students_enrolled&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s2">&quot;sum&quot;</span><span class="p">)</span>
+<span class="n">origin_year_totals</span> <span class="o">=</span> <span class="n">origin_year_totals</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">origin_year_totals</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">merged_df</span><span class="p">[</span><span class="s2">&quot;weight_od&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">merged_df</span><span class="p">[</span><span class="s2">&quot;students_enrolled&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">origin_year_totals</span>
+
+<span class="n">merged_df</span> <span class="o">=</span> <span class="n">merged_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;origin_country_code&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;destination_country_code&quot;</span><span class="p">]</span>
+<span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">weight_sums</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">merged_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;origin_country_code&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">],</span> <span class="n">dropna</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s2">&quot;weight_od&quot;</span><span class="p">]</span>
+    <span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">s</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">empty</span> <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;weight_sum&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Merged mobility_df shape:&quot;</span><span class="p">,</span> <span class="n">merged_df</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Unique origins: </span><span class="si">{0}</span><span class="s2">, destinations: </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">merged_df</span><span class="p">[</span><span class="s2">&quot;origin_country_code&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">(),</span>
+        <span class="n">merged_df</span><span class="p">[</span><span class="s2">&quot;destination_country_code&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">(),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Weight sum summary:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">weight_sums</span><span class="p">[</span><span class="s2">&quot;weight_sum&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+
+<span class="n">weight_issues</span> <span class="o">=</span> <span class="n">weight_sums</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+    <span class="n">weight_sums</span><span class="p">[</span><span class="s2">&quot;weight_sum&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span>
+    <span class="o">&amp;</span> <span class="p">(</span><span class="o">~</span><span class="n">weight_sums</span><span class="p">[</span><span class="s2">&quot;weight_sum&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="mf">0.999</span><span class="p">,</span> <span class="mf">1.001</span><span class="p">))</span>
+<span class="p">]</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">weight_issues</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Origin-year combinations with weight sums deviating from 1 (first 5 shown):&quot;</span><span class="p">)</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">weight_issues</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;All origin-year combinations have weights summing to ~1.&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Merged mobility_df head:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">merged_df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+
+<span class="n">output_path</span> <span class="o">=</span> <span class="n">DATA_PATH</span> <span class="o">/</span> <span class="s2">&quot;merged_mobility.csv&quot;</span>
+<span class="n">merged_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Merged dataset saved to </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Merged mobility_df shape: (134820, 19)
+Unique origins: 210, destinations: 143
+Weight sum summary:
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count    1.260000e+03
+mean     1.000000e+00
+std      8.372475e-17
+min      1.000000e+00
+25%      1.000000e+00
+50%      1.000000e+00
+75%      1.000000e+00
+max      1.000000e+00
+Name: weight_sum, dtype: float64
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>All origin-year combinations have weights summing to ~1.
+Merged mobility_df head:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>indicatorId</th>
+      <th>origin_country_code</th>
+      <th>year</th>
+      <th>students_outbound_total</th>
+      <th>qualifier</th>
+      <th>magnitude</th>
+      <th>origin_country</th>
+      <th>destination_country_code</th>
+      <th>destination_country</th>
+      <th>students_inbound_destination</th>
+      <th>share_inbound_destination</th>
+      <th>students_enrolled</th>
+      <th>students_graduated</th>
+      <th>students_new_entrants</th>
+      <th>flow_source</th>
+      <th>share_mobile_destination</th>
+      <th>share_mobile_origin</th>
+      <th>students_national_abroad</th>
+      <th>weight_od</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>OE.5T8.40510</td>
+      <td>ABW</td>
+      <td>2018</td>
+      <td>365.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Aruba</td>
+      <td>ALB</td>
+      <td>Albania</td>
+      <td>1969.00</td>
+      <td>0.000364</td>
+      <td>0.132720</td>
+      <td>&lt;NA&gt;</td>
+      <td>&lt;NA&gt;</td>
+      <td>estimated</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.000364</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>OE.5T8.40510</td>
+      <td>ABW</td>
+      <td>2018</td>
+      <td>365.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Aruba</td>
+      <td>AND</td>
+      <td>Andorra</td>
+      <td>278.00</td>
+      <td>0.000051</td>
+      <td>0.018738</td>
+      <td>&lt;NA&gt;</td>
+      <td>&lt;NA&gt;</td>
+      <td>estimated</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.000051</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>OE.5T8.40510</td>
+      <td>ABW</td>
+      <td>2018</td>
+      <td>365.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Aruba</td>
+      <td>ARE</td>
+      <td>United Arab Emirates</td>
+      <td>199958.00</td>
+      <td>0.036926</td>
+      <td>13.478095</td>
+      <td>&lt;NA&gt;</td>
+      <td>&lt;NA&gt;</td>
+      <td>estimated</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.036926</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>OE.5T8.40510</td>
+      <td>ABW</td>
+      <td>2018</td>
+      <td>365.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Aruba</td>
+      <td>ARG</td>
+      <td>Argentina</td>
+      <td>109226.25</td>
+      <td>0.020171</td>
+      <td>7.362355</td>
+      <td>&lt;NA&gt;</td>
+      <td>&lt;NA&gt;</td>
+      <td>estimated</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.020171</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>OE.5T8.40510</td>
+      <td>ABW</td>
+      <td>2018</td>
+      <td>365.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Aruba</td>
+      <td>ARM</td>
+      <td>Armenia</td>
+      <td>4598.00</td>
+      <td>0.000849</td>
+      <td>0.309926</td>
+      <td>&lt;NA&gt;</td>
+      <td>&lt;NA&gt;</td>
+      <td>estimated</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.000849</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Merged dataset saved to /Users/simonedinato/Documents/Classes/Applied Econometrics/Project/Datasets/01_mobility_OD/merged_mobility.csv
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="finalize-mobility-od-exposures-v2">
+<h2>Finalize mobility O–D exposures (v2)<a class="headerlink" href="#finalize-mobility-od-exposures-v2" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">DATA</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/Users/simonedinato/Documents/Classes/Applied Econometrics/Project/Datasets&quot;</span><span class="p">)</span>
+<span class="n">MOB_PATHS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/mnt/data/merged_mobility.csv&quot;</span><span class="p">),</span>
+    <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/home/oai/share/merged_mobility.csv&quot;</span><span class="p">),</span>
+    <span class="n">DATA</span> <span class="o">/</span> <span class="s2">&quot;01_mobility_OD&quot;</span> <span class="o">/</span> <span class="s2">&quot;merged_mobility.csv&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">MOB_PATHS</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">MOB_FILE</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="k">break</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;merged_mobility.csv not found in default paths&quot;</span><span class="p">)</span>
+
+<span class="n">mob</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">MOB_FILE</span><span class="p">)</span>
+
+<span class="n">required_columns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;origin_country_code&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;origin_country&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;destination_country_code&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;destination_country&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;students_outbound_total&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;students_inbound_destination&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;share_inbound_destination&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">missing</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">required_columns</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mob</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+<span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing required columns in mobility data: </span><span class="si">{</span><span class="n">missing</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">rename_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;students_outbound_total&quot;</span><span class="p">:</span> <span class="s2">&quot;outbound_total_o&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;students_inbound_destination&quot;</span><span class="p">:</span> <span class="s2">&quot;inbound_total_d&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;share_inbound_destination&quot;</span><span class="p">:</span> <span class="s2">&quot;share_inbound_d&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;students_enrolled&quot;</span><span class="p">:</span> <span class="s2">&quot;students_od_raw&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">mob</span> <span class="o">=</span> <span class="n">mob</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">rename_map</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">mob</span><span class="o">.</span><span class="n">columns</span><span class="p">})</span>
+
+<span class="n">region_terms</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;unspecified&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Northern America&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Latin America and the Caribbean&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Africa&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Asia&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Europe&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Oceania&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="s2">&quot;origin_country&quot;</span> <span class="ow">in</span> <span class="n">mob</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">origin_names</span> <span class="o">=</span> <span class="n">mob</span><span class="p">[</span><span class="s2">&quot;origin_country&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">mask_regions</span> <span class="o">=</span> <span class="n">origin_names</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">region_terms</span><span class="p">)</span> <span class="o">|</span> <span class="n">origin_names</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;unspecified&quot;</span><span class="p">,</span> <span class="n">case</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">na</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">mob</span> <span class="o">=</span> <span class="n">mob</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">mask_regions</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">numeric_col</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;outbound_total_o&quot;</span><span class="p">,</span> <span class="s2">&quot;inbound_total_d&quot;</span><span class="p">,</span> <span class="s2">&quot;share_inbound_d&quot;</span><span class="p">,</span> <span class="s2">&quot;students_od_raw&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">numeric_col</span> <span class="ow">in</span> <span class="n">mob</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">mob</span><span class="p">[</span><span class="n">numeric_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">mob</span><span class="p">[</span><span class="n">numeric_col</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="s2">&quot;share_inbound_d&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mob</span><span class="o">.</span><span class="n">columns</span> <span class="ow">or</span> <span class="n">mob</span><span class="p">[</span><span class="s2">&quot;share_inbound_d&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+    <span class="k">if</span> <span class="s2">&quot;inbound_total_d&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mob</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot compute destination shares without inbound totals&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_share_within_year</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">skipna</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">total</span> <span class="ow">or</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">total</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">values</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">values</span> <span class="o">/</span> <span class="n">total</span>
+
+    <span class="n">mob</span><span class="p">[</span><span class="s2">&quot;dest_share_year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mob</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;year&quot;</span><span class="p">)[</span><span class="s2">&quot;inbound_total_d&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">_share_within_year</span><span class="p">)</span>
+    <span class="n">share_col</span> <span class="o">=</span> <span class="s2">&quot;dest_share_year&quot;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">share_col</span> <span class="o">=</span> <span class="s2">&quot;share_inbound_d&quot;</span>
+    <span class="n">mob</span><span class="p">[</span><span class="n">share_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">mob</span><span class="p">[</span><span class="n">share_col</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="s2">&quot;outbound_total_o&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mob</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot construct O-D proxy without outbound totals&quot;</span><span class="p">)</span>
+
+<span class="n">mob</span><span class="p">[</span><span class="s2">&quot;students_od&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mob</span><span class="p">[</span><span class="s2">&quot;outbound_total_o&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">mob</span><span class="p">[</span><span class="n">share_col</span><span class="p">]</span>
+<span class="n">missing_students</span> <span class="o">=</span> <span class="n">mob</span><span class="p">[</span><span class="s2">&quot;students_od&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">missing_students</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Warning: </span><span class="si">{</span><span class="n">missing_students</span><span class="si">}</span><span class="s2"> rows with missing students_od after proxy computation&quot;</span><span class="p">)</span>
+
+<span class="n">denominator</span> <span class="o">=</span> <span class="n">mob</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;origin_country_code&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">])[</span><span class="s2">&quot;students_od&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s2">&quot;sum&quot;</span><span class="p">)</span>
+<span class="n">mob</span><span class="p">[</span><span class="s2">&quot;weight_od&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mob</span><span class="p">[</span><span class="s2">&quot;students_od&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">denominator</span>
+<span class="n">mob</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">denominator</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;weight_od&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+
+<span class="n">chk</span> <span class="o">=</span> <span class="n">mob</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;origin_country_code&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">])[</span><span class="s2">&quot;weight_od&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;w_sum&quot;</span><span class="p">)</span>
+<span class="n">viol</span> <span class="o">=</span> <span class="n">chk</span><span class="p">[</span><span class="o">~</span><span class="n">chk</span><span class="p">[</span><span class="s2">&quot;w_sum&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="mf">0.999</span><span class="p">,</span> <span class="mf">1.001</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Weight-sum violations:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">viol</span><span class="p">))</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">viol</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">viol</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+
+<span class="n">dest_counts</span> <span class="o">=</span> <span class="n">mob</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;origin_country_code&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">])[</span><span class="s2">&quot;destination_country_code&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
+<span class="n">few</span> <span class="o">=</span> <span class="n">dest_counts</span><span class="p">[</span><span class="n">dest_counts</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Origins with &lt;2 destinations:&quot;</span><span class="p">,</span> <span class="n">few</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">few</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">few</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+
+<span class="n">exposure_cols</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;origin_country_code&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;origin_country&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;destination_country_code&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;destination_country&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;students_od&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;outbound_total_o&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;weight_od&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">missing_exposure</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">exposure_cols</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mob</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+<span class="k">if</span> <span class="n">missing_exposure</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing columns for exposure export: </span><span class="si">{</span><span class="n">missing_exposure</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">exposure</span> <span class="o">=</span> <span class="n">mob</span><span class="p">[</span><span class="n">exposure_cols</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;weight_od&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">output_dir</span> <span class="o">=</span> <span class="n">DATA</span> <span class="o">/</span> <span class="s2">&quot;01_mobility_OD&quot;</span>
+<span class="n">output_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">output_file</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;od_exposure_v2.csv&quot;</span>
+<span class="n">exposure</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exposure panel saved to </span><span class="si">{</span><span class="n">output_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">exposure</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Weight-sum violations: 0
+Origins with &lt;2 destinations: 0
+Exposure panel saved to /Users/simonedinato/Documents/Classes/Applied Econometrics/Project/Datasets/01_mobility_OD/od_exposure_v2.csv
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>origin_country_code</th>
+      <th>origin_country</th>
+      <th>destination_country_code</th>
+      <th>destination_country</th>
+      <th>year</th>
+      <th>students_od</th>
+      <th>outbound_total_o</th>
+      <th>weight_od</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ABW</td>
+      <td>Aruba</td>
+      <td>ALB</td>
+      <td>Albania</td>
+      <td>2018</td>
+      <td>0.132720</td>
+      <td>365.0</td>
+      <td>0.000364</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>ABW</td>
+      <td>Aruba</td>
+      <td>AND</td>
+      <td>Andorra</td>
+      <td>2018</td>
+      <td>0.018738</td>
+      <td>365.0</td>
+      <td>0.000051</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>ABW</td>
+      <td>Aruba</td>
+      <td>ARE</td>
+      <td>United Arab Emirates</td>
+      <td>2018</td>
+      <td>13.478095</td>
+      <td>365.0</td>
+      <td>0.036926</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>ABW</td>
+      <td>Aruba</td>
+      <td>ARG</td>
+      <td>Argentina</td>
+      <td>2018</td>
+      <td>7.362355</td>
+      <td>365.0</td>
+      <td>0.020171</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>ABW</td>
+      <td>Aruba</td>
+      <td>ARM</td>
+      <td>Armenia</td>
+      <td>2018</td>
+      <td>0.309926</td>
+      <td>365.0</td>
+      <td>0.000849</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Student Flow Analysis: A Data-Driven Approach</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="02_economic_data.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Step 2 &amp; 3: Earnings and Costs Data</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Applied Econometrics Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
